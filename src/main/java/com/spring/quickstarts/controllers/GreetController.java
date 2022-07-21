@@ -2,9 +2,8 @@ package com.spring.quickstarts.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.quickstarts.services.GreetService;
@@ -20,8 +19,8 @@ public class GreetController {
 	
 	@Autowired
 	private GreetService greetService;
-	
-	@GetMapping("/")
+	@RequestMapping(method = RequestMethod.GET)
+//	@GetMapping("/")
     public String getInitialMessage() {
 		
 		System.out.println(greetService.getGreet(null));
@@ -29,8 +28,8 @@ public class GreetController {
         return "greet";
     }
 
-//    @RequestMapping(method = RequestMethod.POST)
-	@PostMapping
+    @RequestMapping(method = RequestMethod.POST)
+//	@PostMapping
     public String getGreeting(@RequestParam("username") String username) {    
         if (username != null) {
             return "hello";
@@ -38,9 +37,4 @@ public class GreetController {
             return "No such user exists! Use 'emuster' or 'jdoe'";
         }
     }
-	
-	@GetMapping("/admin") 
-	public String admin() { 
-		return "admin"; 
-	} 
 }
