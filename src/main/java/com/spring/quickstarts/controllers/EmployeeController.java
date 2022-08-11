@@ -7,10 +7,13 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -126,5 +129,12 @@ public class EmployeeController {
     public String deleteEmployee(@PathVariable String ssn) {
         service.deleteEmployeeBySsn(ssn);
         return "redirect:/list";
+    }
+    
+    
+    @ExceptionHandler(value = EmptyResultDataAccessException.class)
+    public String emptyResultDataAccessExceptionHandler(Model theModel) {       
+        theModel.addAttribute("err", "EmptyResultDataAccessException");
+        return "error";
     }
 }

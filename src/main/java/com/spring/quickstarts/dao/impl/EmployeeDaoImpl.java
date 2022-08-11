@@ -8,6 +8,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.spring.quickstarts.dao.AbstractDao;
@@ -17,6 +18,9 @@ import com.spring.quickstarts.model.Employee;
 @Repository("employeeDao")
 public class EmployeeDaoImpl extends AbstractDao<Integer, Employee> implements EmployeeDao {
  
+	@Autowired
+	private String testFactoryBean;
+	
     public Employee findById(int id) {
         return getByKey(id);
     }
@@ -33,6 +37,9 @@ public class EmployeeDaoImpl extends AbstractDao<Integer, Employee> implements E
  
     @SuppressWarnings("unchecked")
     public List<Employee> findAllEmployees() {
+    	
+    	System.out.println("&&&&&&&&&&&&&&&&&&&&& ------------ testFactoryBean: " + testFactoryBean);
+    	
         CriteriaQuery<Employee> criteriaQuery = createEntityCriteria();
         Root<Employee> root = criteriaQuery.from(Employee.class);
         CriteriaQuery<Employee> all = criteriaQuery.select(root);
@@ -40,17 +47,27 @@ public class EmployeeDaoImpl extends AbstractDao<Integer, Employee> implements E
         return allQuery.getResultList();
     }
  
+//    public Employee findEmployeeBySsn(String ssn) {
+//    	try {
+//    		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+//            CriteriaQuery<Employee> criteriaQuery = builder.createQuery(Employee.class);
+//
+//            Root<Employee> root = criteriaQuery.from(Employee.class);
+//            criteriaQuery.select(root).where(builder.equal(root.get("ssn"), ssn));
+//            Query<Employee> query = getSession().createQuery(criteriaQuery);
+//            return (Employee) query.getSingleResult();
+//    	} catch(Exception ex) {
+//    		return null;
+//    	}
+//    }
+    
     public Employee findEmployeeBySsn(String ssn) {
-    	try {
-    		CriteriaBuilder builder = getSession().getCriteriaBuilder();
-            CriteriaQuery<Employee> criteriaQuery = builder.createQuery(Employee.class);
+    	CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<Employee> criteriaQuery = builder.createQuery(Employee.class);
 
-            Root<Employee> root = criteriaQuery.from(Employee.class);
-            criteriaQuery.select(root).where(builder.equal(root.get("ssn"), ssn));
-            Query<Employee> query = getSession().createQuery(criteriaQuery);
-            return (Employee) query.getSingleResult();
-    	} catch(Exception ex) {
-    		return null;
-    	}
+        Root<Employee> root = criteriaQuery.from(Employee.class);
+        criteriaQuery.select(root).where(builder.equal(root.get("ssn"), ssn));
+        Query<Employee> query = getSession().createQuery(criteriaQuery);
+        return (Employee) query.getSingleResult();
     }
 }
