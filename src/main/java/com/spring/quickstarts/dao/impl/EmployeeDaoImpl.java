@@ -2,6 +2,10 @@ package com.spring.quickstarts.dao.impl;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnit;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -21,6 +25,15 @@ public class EmployeeDaoImpl extends AbstractDao<Integer, Employee> implements E
 	@Autowired
 	private String testFactoryBean;
 	
+//	@Autowired
+//	private EntityManagerFactory emf;
+	
+//	@PersistenceUnit
+//	private EntityManagerFactory emf;
+	
+	@PersistenceContext
+	private EntityManager em;
+	
     public Employee findById(int id) {
         return getByKey(id);
     }
@@ -39,6 +52,8 @@ public class EmployeeDaoImpl extends AbstractDao<Integer, Employee> implements E
     public List<Employee> findAllEmployees() {
     	
     	System.out.println("&&&&&&&&&&&&&&&&&&&&& ------------ testFactoryBean: " + testFactoryBean);
+//    	System.out.println("&&&&&&&&&&&&&&&&&&&&& ------------ emf: " + emf);
+    	System.out.println("&&&&&&&&&&&&&&&&&&&&& ------------ em: " + em);
     	
         CriteriaQuery<Employee> criteriaQuery = createEntityCriteria();
         Root<Employee> root = criteriaQuery.from(Employee.class);

@@ -21,12 +21,14 @@
 		xmlns:tx="http://www.springframework.org/schema/tx"
 		xmlns:aop="http://www.springframework.org/schema/aop"
 		xmlns:jee="http://www.springframework.org/schema/jee"
+		xmlns:jpa="http://www.springframework.org/schema/data/jpa"
 		
     xsi:schemaLocation="
       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd 
       http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd 
+      http://www.springframework.org/schema/data/jpa https://www.springframework.org/schema/data/jpa/spring-jpa.xsd
       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 <!-- Scan the domain package for Spring repositories and services -->
@@ -49,7 +51,12 @@
    			expected-type="javax.sql.DataSource" /> -->
    	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 	    <property name="jndiName" value="java:jboss/datasources/ExampleDS"/>
-	</bean>				
+	</bean>
+	
+	<bean id="emf" class="org.springframework.jndi.JndiObjectFactoryBean">
+	    <property name="jndiName" value="java:jboss/datasources/ExampleDS"/>
+	</bean>	
+				
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="packagesToScan" value="com.spring.quickstarts.model"/>
@@ -69,6 +76,8 @@
     
     <bean id="persistenceExceptionTranslationPostProcessor" class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"></bean>
     
+    
+    <jpa:repositories base-package="com.spring.quickstarts"></jpa:repositories>
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
 </beans>
