@@ -3,9 +3,7 @@ package com.spring.quickstarts.dao.impl;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceUnit;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -14,6 +12,7 @@ import javax.persistence.criteria.Root;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.jta.JtaTransactionManager;
 
 import com.spring.quickstarts.dao.AbstractDao;
 import com.spring.quickstarts.dao.EmployeeDao;
@@ -24,6 +23,9 @@ public class EmployeeDaoImpl extends AbstractDao<Integer, Employee> implements E
  
 	@Autowired
 	private String testFactoryBean;
+	
+	@Autowired
+	JtaTransactionManager txManager;
 	
 //	@Autowired
 //	private EntityManagerFactory emf;
@@ -54,6 +56,7 @@ public class EmployeeDaoImpl extends AbstractDao<Integer, Employee> implements E
     	System.out.println("&&&&&&&&&&&&&&&&&&&&& ------------ testFactoryBean: " + testFactoryBean);
 //    	System.out.println("&&&&&&&&&&&&&&&&&&&&& ------------ emf: " + emf);
     	System.out.println("&&&&&&&&&&&&&&&&&&&&& ------------ em: " + em);
+    	System.out.println("&&&&&&&&&&&&&&&&&&&&& ------------ txManager: " + txManager);
     	
         CriteriaQuery<Employee> criteriaQuery = createEntityCriteria();
         Root<Employee> root = criteriaQuery.from(Employee.class);
