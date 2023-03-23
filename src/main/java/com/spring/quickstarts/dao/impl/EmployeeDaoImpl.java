@@ -1,5 +1,6 @@
 package com.spring.quickstarts.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -85,4 +86,30 @@ public class EmployeeDaoImpl extends AbstractDao<Integer, Employee> implements E
         Query<Employee> query = getSession().createQuery(criteriaQuery);
         return (Employee) query.getSingleResult();
     }
+
+    @Override
+	public Employee findEmployee(Integer id) {
+		Query query = getSession().createSQLQuery("select emp_no, first_nam from employees where emp_no = :id");
+		query.setParameter("id", id);
+        List<Object[]> rows =  query.list();
+        List<Employee> list = new ArrayList<>();
+        for ( Object[] row : rows ) {
+        	Employee employee = new Employee();
+        	employee.setEmp_no(Integer.parseInt(row[0].toString()));
+        	employee.setFirst_name(row[1].toString());
+        	list.add(employee);
+        }
+        return list.get(0);
+	}
+    
+//	@Override
+//	public Employee findEmployee(Integer id) {
+//		CriteriaBuilder builder = getSession().getCriteriaBuilder();
+//        CriteriaQuery<Employee> criteriaQuery = builder.createQuery(Employee.class);
+//
+//        Root<Employee> root = criteriaQuery.from(Employee.class);
+//        criteriaQuery.select(root).where(builder.equal(root.get("emp_"), id));
+//        Query<Employee> query = getSession().createQuery(criteriaQuery);
+//        return (Employee) query.getSingleResult();
+//	}
 }

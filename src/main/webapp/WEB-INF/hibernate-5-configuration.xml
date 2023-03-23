@@ -50,11 +50,11 @@
    	<!-- <jee:jndi-lookup id="dataSource" jndi-name="java:jboss/datasources/ExampleDS"
    			expected-type="javax.sql.DataSource" /> -->
    	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-	    <property name="jndiName" value="java:jboss/datasources/ExampleDS"/>
+	    <property name="jndiName" value="java:jboss/MysqlXADS"/>
 	</bean>
 	
 	<bean id="emf" class="org.springframework.jndi.JndiObjectFactoryBean">
-	    <property name="jndiName" value="java:jboss/datasources/ExampleDS"/>
+	    <property name="jndiName" value="java:jboss/MysqlXADS"/>
 	</bean>	
 				
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
@@ -74,7 +74,9 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     
-    <bean id="persistenceExceptionTranslationPostProcessor" class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"></bean>
+    <bean id="persistenceExceptionTranslationPostProcessor" 
+    	class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor">
+    </bean>
     
     
     <jpa:repositories base-package="com.spring.quickstarts"></jpa:repositories>
