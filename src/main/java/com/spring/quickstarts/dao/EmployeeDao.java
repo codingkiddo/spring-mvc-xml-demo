@@ -2,20 +2,13 @@ package com.spring.quickstarts.dao;
 
 import java.util.List;
 
-import com.spring.quickstarts.model.Employee;
+import com.spring.quickstarts.model.EmployeeEMF;
  
 public interface EmployeeDao {
  
-//    Employee findById(int id);
-// 
-//    void saveEmployee(Employee employee);
-//     
-//    void deleteEmployeeBySsn(String ssn);
-     
-    List<Employee> findAllEmployees();
+    List<EmployeeEMF> findAllEmployees();
 
-	Employee findEmployee(Integer id);
+    EmployeeEMF findEmployee(Integer id);
  
-//    Employee findEmployeeBySsn(String ssn);
- 
+    void saveEmployee(EmployeeEMF employee);
 }
