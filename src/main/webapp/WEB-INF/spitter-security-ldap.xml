@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xmlns:security="http://www.springframework.org/schema/security" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+
+	<!--<start id="ldap_server"/> 
+	Defines an LDAP server location or starts an embedded server. 
+	The url indicates the location of a remote server. 
+	If no url is given, an embedded server will be started, listening on the supplied port number. 
+	The port is optional and defaults to 33389. 
+	A Spring LDAP ContextSource bean will be registered for the server with the id supplied.
+	-->
+	<security:ldap-server id="ldapServer" url="ldap://localhost:33389/dc=habuma,dc=com"  
+		root="dc=habuma,dc=com" ldif="/WEB-INF/conf/users.ldif" />
+	<!--<end id="ldap_server"/>-->
+
+	<!--<start id="ldap_user_service"/>-->
+	<security:ldap-user-service id="userService"  
+		user-search-base="ou=people" 
+		user-search-filter="(uid={0})" 
+		group-search-base="ou=groups" 
+		group-search-filter="member={0}" />
+	<!--<end id="ldap_user_service"/>-->
+</beans>

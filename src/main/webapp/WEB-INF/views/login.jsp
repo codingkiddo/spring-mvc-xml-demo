@@ -1,50 +1,73 @@
-<%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
-<div>
-   <h2>Sign in to Spitter</h2>
-   
-   <p>
-    If you've been using Spitter from your phone,
-    then that's amazing...we don't support IM yet.
-   </p>
-   
-   <spring:url var="authUrl" 
-          value="/static/j_spring_security_check" /><!--<co id="co_securityCheckPath"/>-->
-   <form method="post" class="signin" action="${authUrl}">
-   
-    <fieldset>
-    <table cellspacing="0">
-    <tr>
-    <th><label for="username_or_email">Username or Email</label></th>
-    <td><input id="username_or_email" 
-               name="j_username" 
-               type="text" />  <!--<co id="co_usernameField"/>-->
-      </td>
-    </tr>
-    <tr>
-    <th><label for="password">Password</label></th>
-      <td><input id="password" 
-                 name="j_password" 
-                 type="password" /> <!--<co id="co_passwordField"/>-->
-          <small><a href="/account/resend_password">Forgot?</a></small>
-      </td>
-    </tr>
-    <tr>
-    <th></th>
-    <td><input id="remember_me" 
-        name="_spring_security_remember_me" 
-        type="checkbox"/> <!--<co id="co_rememberMe"/>-->
-        <label for="remember_me" 
-               class="inline">Remember me</label></td>
-    </tr>
-    <tr>
-    <th></th>
-    <td><input name="commit" type="submit" value="Sign In" /></td>
-    </tr>
-    </table>
-    </fieldset>
-   </form>
-   
-   <script type="text/javascript">
-    document.getElementById('username_or_email').focus();
-   </script>
-</div>
+
+<%@page session="true"%>
+<html>
+<head>
+<title>Login Page</title>
+<style>
+.error {
+ padding: 15px;
+ margin-bottom: 20px;
+ border: 1px solid transparent;
+ border-radius: 4px;
+ color: #a94442;
+ background-color: #f2dede;
+ border-color: #ebccd1;
+}
+
+.msg {
+ padding: 15px;
+ margin-bottom: 20px;
+ border: 1px solid transparent;
+ border-radius: 4px;
+ color: #31708f;
+ background-color: #d9edf7;
+ border-color: #bce8f1;
+}
+
+#login-box {
+ width: 300px;
+ padding: 20px;
+ margin: 100px auto;
+ background: #fff;
+ -webkit-border-radius: 2px;
+ -moz-border-radius: 2px;
+ border: 1px solid #000;
+}
+</style>
+</head>
+<body onload='document.loginForm.username.focus();'>
+
+ <h1>Spring Security Login Form (LDAP Authentication)</h1>
+
+ <div id="login-box">
+
+ <h2>Login with Username and Password</h2>
+
+
+ <form name='loginForm'
+ action="login" method='POST'>
+
+ <table>
+ <tr>
+ <td>User:</td>
+ <td><input type='text' name='username'></td>
+ </tr>
+ <tr>
+ <td>Password:</td>
+ <td><input type='password' name='password' /></td>
+ </tr>
+ <tr>
+ <td colspan='2'><input name="submit"
+type="submit"
+ value="submit" /></td>
+ </tr>
+ </table>
+
+ <input type="hidden" name="${_csrf.parameterName}"
+ value="${_csrf.token}" />
+
+ </form>
+ </div>
+
+</body>
+</html>
