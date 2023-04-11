@@ -1,88 +1,41 @@
 package com.spring.quickstarts.dao.impl;
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceUnit;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-
+import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.jta.JtaTransactionManager;
 
-import com.spring.quickstarts.dao.AbstractDao;
 import com.spring.quickstarts.dao.EmployeeDao;
 import com.spring.quickstarts.model.Employee;
 
-@Repository("employeeDao")
-public class EmployeeDaoImpl extends AbstractDao<Integer, Employee> implements EmployeeDao {
+@Repository
+@Transactional
+public class EmployeeDaoImpl implements EmployeeDao {
  
+	
 	@Autowired
-	private String testFactoryBean;
+	private SessionFactory sessionFactory;
 	
-//	@Autowired
-//	private EntityManagerFactory emf;
+	@Autowired
+	private JtaTransactionManager txManager;
 	
-//	@PersistenceUnit
-//	private EntityManagerFactory emf;
-	
-	@PersistenceContext
-	private EntityManager em;
-	
-    public Employee findById(int id) {
-        return getByKey(id);
+    public Employee findByEmpNo(int id) {
+        return sessionFactory.getCurrentSession().get(Employee.class, id);
     }
  
     public void saveEmployee(Employee employee) {
-        persist(employee);
+    	sessionFactory.getCurrentSession().persist(employee);
     }
  
-    public void deleteEmployeeBySsn(String ssn) {
-        Query<Employee> query = getSession().createSQLQuery("delete from Employee where ssn = :ssn");
-        query.setParameter("ssn", ssn);
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void deleteEmployee(Integer emp_no) {
+        Query<Employee> query = sessionFactory.getCurrentSession().createSQLQuery("delete from Employee where emp_no = :emp_no");
+        query.setParameter("emp_no", emp_no);
         query.executeUpdate();
     }
  
-    @SuppressWarnings("unchecked")
-    public List<Employee> findAllEmployees() {
-    	
-    	System.out.println("&&&&&&&&&&&&&&&&&&&&& ------------ testFactoryBean: " + testFactoryBean);
-//    	System.out.println("&&&&&&&&&&&&&&&&&&&&& ------------ emf: " + emf);
-    	System.out.println("&&&&&&&&&&&&&&&&&&&&& ------------ em: " + em);
-    	
-        CriteriaQuery<Employee> criteriaQuery = createEntityCriteria();
-        Root<Employee> root = criteriaQuery.from(Employee.class);
-        CriteriaQuery<Employee> all = criteriaQuery.select(root);
-        TypedQuery<Employee> allQuery = this.getSession().createQuery(all);
-        return allQuery.getResultList();
-    }
- 
-//    public Employee findEmployeeBySsn(String ssn) {
-//    	try {
-//    		CriteriaBuilder builder = getSession().getCriteriaBuilder();
-//            CriteriaQuery<Employee> criteriaQuery = builder.createQuery(Employee.class);
-//
-//            Root<Employee> root = criteriaQuery.from(Employee.class);
-//            criteriaQuery.select(root).where(builder.equal(root.get("ssn"), ssn));
-//            Query<Employee> query = getSession().createQuery(criteriaQuery);
-//            return (Employee) query.getSingleResult();
-//    	} catch(Exception ex) {
-//    		return null;
-//    	}
-//    }
-    
-    public Employee findEmployeeBySsn(String ssn) {
-    	CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<Employee> criteriaQuery = builder.createQuery(Employee.class);
-
-        Root<Employee> root = criteriaQuery.from(Employee.class);
-        criteriaQuery.select(root).where(builder.equal(root.get("ssn"), ssn));
-        Query<Employee> query = getSession().createQuery(criteriaQuery);
-        return (Employee) query.getSingleResult();
-    }
+   
 }
