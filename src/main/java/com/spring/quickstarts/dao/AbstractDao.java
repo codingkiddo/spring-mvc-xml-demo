@@ -31,7 +31,7 @@ public abstract class AbstractDao<PK extends Serializable, T> {
 	}
 	
 	public void persist(T entity) {
-		this.getSession().persist(entity);
+		this.getSession().save(entity);
 	}
 	
 	protected CriteriaQuery<T> createEntityCriteria(){

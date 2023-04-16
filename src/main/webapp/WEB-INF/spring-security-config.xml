@@ -11,7 +11,9 @@ http://www.springframework.org/schema/security/spring-security.xsd">
 	
 	
 	<http auto-config="true">
-		<intercept-url pattern="/app/greet/*" access="hasRole('ROLE_ADMIN')"/>
+		<intercept-url pattern="/app/greet/*" access="permitAll" />
+		<intercept-url pattern="/app/employee/*" access="permitAll" />
+		<csrf disabled="true"/>
 	</http>
 	
 	<authentication-manager>

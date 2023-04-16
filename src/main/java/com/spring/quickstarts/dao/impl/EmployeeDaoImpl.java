@@ -5,13 +5,12 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceUnit;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.transaction.TransactionManager;
 
-import org.hibernate.query.Query;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -19,14 +18,11 @@ import com.spring.quickstarts.dao.AbstractDao;
 import com.spring.quickstarts.dao.EmployeeDao;
 import com.spring.quickstarts.model.Employee;
 
-@Repository("employeeDao")
+@Repository
 public class EmployeeDaoImpl extends AbstractDao<Integer, Employee> implements EmployeeDao {
  
 	@Autowired
-	private String testFactoryBean;
-	
-//	@Autowired
-//	private EntityManagerFactory emf;
+	private EntityManagerFactory emf;
 	
 //	@PersistenceUnit
 //	private EntityManagerFactory emf;
@@ -34,55 +30,36 @@ public class EmployeeDaoImpl extends AbstractDao<Integer, Employee> implements E
 	@PersistenceContext
 	private EntityManager em;
 	
+	@Autowired
+	private TransactionManager transactionManagerName;
+	
     public Employee findById(int id) {
         return getByKey(id);
     }
  
+//    @Transactional(propagation = Propagation.REQUIRED)
     public void saveEmployee(Employee employee) {
+    	Transaction transaction = this.getSession().getTransaction();
+        System.out.println("transaction.isActive()->" + transaction.isActive());
+        System.out.println("&&&&&&&&&&&&&&&&&&&&& ------------ emf: " + emf);
+    	System.out.println("&&&&&&&&&&&&&&&&&&&&& ------------ em: " + em);
+    	System.out.println("&&&&&&&&&&&&&&&&&&&&& ------------ transactionManagerName: " + transactionManagerName);
         persist(employee);
     }
  
-    public void deleteEmployeeBySsn(String ssn) {
-        Query<Employee> query = getSession().createSQLQuery("delete from Employee where ssn = :ssn");
-        query.setParameter("ssn", ssn);
-        query.executeUpdate();
-    }
- 
     @SuppressWarnings("unchecked")
+//    @Transactional
     public List<Employee> findAllEmployees() {
-    	
-    	System.out.println("&&&&&&&&&&&&&&&&&&&&& ------------ testFactoryBean: " + testFactoryBean);
-//    	System.out.println("&&&&&&&&&&&&&&&&&&&&& ------------ emf: " + emf);
+    	System.out.println("&&&&&&&&&&&&&&&&&&&&& ------------ emf: " + emf);
     	System.out.println("&&&&&&&&&&&&&&&&&&&&& ------------ em: " + em);
-    	
+    	System.out.println(this);
         CriteriaQuery<Employee> criteriaQuery = createEntityCriteria();
         Root<Employee> root = criteriaQuery.from(Employee.class);
         CriteriaQuery<Employee> all = criteriaQuery.select(root);
         TypedQuery<Employee> allQuery = this.getSession().createQuery(all);
+        Transaction transaction = this.getSession().getTransaction();
+        System.out.println(transaction.isActive());
         return allQuery.getResultList();
     }
  
-//    public Employee findEmployeeBySsn(String ssn) {
-//    	try {
-//    		CriteriaBuilder builder = getSession().getCriteriaBuilder();
-//            CriteriaQuery<Employee> criteriaQuery = builder.createQuery(Employee.class);
-//
-//            Root<Employee> root = criteriaQuery.from(Employee.class);
-//            criteriaQuery.select(root).where(builder.equal(root.get("ssn"), ssn));
-//            Query<Employee> query = getSession().createQuery(criteriaQuery);
-//            return (Employee) query.getSingleResult();
-//    	} catch(Exception ex) {
-//    		return null;
-//    	}
-//    }
-    
-    public Employee findEmployeeBySsn(String ssn) {
-    	CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<Employee> criteriaQuery = builder.createQuery(Employee.class);
-
-        Root<Employee> root = criteriaQuery.from(Employee.class);
-        criteriaQuery.select(root).where(builder.equal(root.get("ssn"), ssn));
-        Query<Employee> query = getSession().createQuery(criteriaQuery);
-        return (Employee) query.getSingleResult();
-    }
 }
