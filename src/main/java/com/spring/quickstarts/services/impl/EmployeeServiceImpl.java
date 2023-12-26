@@ -3,6 +3,7 @@ package com.spring.quickstarts.services.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeDao dao;
      
+//    DriverManagerDataSource dataSource;
+    
     @Transactional(readOnly = true)
     public Employee findById(int id) {
         return dao.findById(id);
