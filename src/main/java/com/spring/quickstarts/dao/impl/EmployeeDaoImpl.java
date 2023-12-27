@@ -14,12 +14,8 @@ import com.spring.quickstarts.model.Employee;
 @Repository
 public class EmployeeDaoImpl implements EmployeeDao {
  
-	
+	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	
-	public void setDataSource(DataSource dataSource) {
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
-	}
 	
     public Employee findById(int id) {
     	Employee employee = jdbcTemplate.queryForObject("select * from employees where emp_no=?", new Object[] {id}, new EmployeeMapper());

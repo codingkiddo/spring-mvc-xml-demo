@@ -29,6 +29,9 @@
 
    <!-- Scan the domain package for Spring repositories and services -->
    <context:component-scan base-package="com.spring.quickstarts" />
+	<context:annotation-config></context:annotation-config>
+	
+	<import resource="spring-datasource-configuration-test.xml"/>
 
 
 </beans>
