@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.spring.quickstarts</groupId>
 	<artifactId>spring-mvc-xml-demo</artifactId>
@@ -14,7 +16,8 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<!-- Define the version of the Spring Framework we want to import. Any 
+			<!-- Define the version of the Spring Framework we want to import.
+			Any 
 				dependencies from org.springframework.* will have their version defined by 
 				this BOM -->
 			<dependency>
@@ -61,7 +64,8 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa -->
+		<!--
+		https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa -->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
@@ -91,7 +95,8 @@
 			<version>${joda-time.version}</version>
 		</dependency>
 		<!-- To map JodaTime with database type -->
-		<!-- https://mvnrepository.com/artifact/org.jadira.usertype/usertype.core -->
+		<!--
+		https://mvnrepository.com/artifact/org.jadira.usertype/usertype.core -->
 		<dependency>
 			<groupId>org.jadira.usertype</groupId>
 			<artifactId>usertype.core</artifactId>
@@ -109,21 +114,24 @@
 			<artifactId>validation-api</artifactId>
 			<version>1.1.0.Final</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-web -->
+		<!--
+		https://mvnrepository.com/artifact/org.springframework.security/spring-security-web -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
 			<version>5.6.2</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+		<!--
+		https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
 			<version>5.6.2</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
+		<!--
+		https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
@@ -156,7 +164,17 @@
 	</dependencies>
 
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.sonarsource.scanner.maven</groupId>
+					<artifactId>sonar-maven-plugin</artifactId>
+					<version>3.4.0.905</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
